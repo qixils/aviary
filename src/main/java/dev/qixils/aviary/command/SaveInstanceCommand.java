@@ -25,9 +25,11 @@ public class SaveInstanceCommand extends Command {
 				Aviary.alert(sender, "You are not in an instance.");
 				return;
 			}
-			instance.saveChunksToStorage().thenRun(() -> Aviary.send(sender, "Saved current instance."));
-			// TODO: create a static method in Aviary which clones an Instance and sets a tag marking it as a temporary instance.
-			//  then, in this command, we can prevent temporary instances from being saved.
+			if (instance.getTag(Aviary.DISABLE_SAVING_TAG)) {
+				Aviary.alert(sender, "This instance cannot be saved to disk.");
+				return;
+			}
+			instance.saveChunksToStorage().thenRun(() -> Aviary.send(sender, "Your current instance has been saved to disk."));
 		});
 	}
 }

@@ -105,8 +105,9 @@ public class Arena implements Nameable<String> {
 	 * @return the arena's instance
 	 */
 	public @NotNull InstanceContainer loadInstance(boolean copy) {
-		// TODO handle copy arg (see TODO in SaveInstanceCommand)
-		return Aviary.getInstanceManager().createInstanceContainer(new AnvilLoader(id));
+		InstanceContainer instance = Aviary.getInstanceManager().createInstanceContainer(new AnvilLoader(id));
+		instance.setTag(Aviary.DISABLE_SAVING_TAG, copy);
+		return instance;
 	}
 
 	/**

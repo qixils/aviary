@@ -15,12 +15,20 @@ import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.instance.AnvilLoader;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
+import net.minestom.server.tag.Tag;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * The main class of the Aviary server.
  */
 public final class Aviary {
+	/**
+	 * The tag used to disable saving instances to disk.
+	 */
+	public static final Tag<Boolean> DISABLE_SAVING_TAG = Tag.Boolean("IsSavingDisabled").defaultValue(false);
+	/**
+	 * The prefix used in responses to commands.
+	 */
 	public static final Component PREFIX = Component.text().color(TextColor.color(0xFFFCB6))
 			.append(Component.text('[', TextColor.color(0x777777), TextDecoration.BOLD))
 			.append(Component.text("Aviary", TextColor.color(0xEEBA66)))
