@@ -5,31 +5,33 @@ import dev.qixils.aviary.GameType;
 import dev.qixils.aviary.Nameable;
 import dev.qixils.aviary.Team;
 import dev.qixils.aviary.match.Match;
+import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.AnvilLoader;
 import net.minestom.server.instance.InstanceContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 // TODO:
-//  - teams
-//  - loadouts
-//  - instance?
 //  - saving
 //  - loading
+//  - note: i'm not adding spectate or respawn positions because ideally i'd like to just hide
+//    players when they die, give them fly, then turn fly off and tp them to spawn once their
+//    respawn timer is up (or keep fly on and give them a spectate compass if super dead).
 
 /**
  * Represents an arena on which players can fight.
  */
 public class Arena implements Nameable<String> {
+	private volatile @Nullable InstanceContainer instanceCache;
 	private final @NotNull String id;
 	private final @NotNull String gameTypeId;
-	private final @NotNull List<UUID> teams;
+	private final @NotNull List<Team> teams;
+	private final @NotNull List<Pos> spawnPoints;
 	private @Nullable String name;
+	private @Nullable Pos lobby;
 
 	/**
 	 * Initializes an arena given its id and game type.
@@ -41,19 +43,23 @@ public class Arena implements Nameable<String> {
 		this.id = id;
 		this.gameTypeId = gameTypeId;
 		teams = new ArrayList<>();
+		spawnPoints = new ArrayList<>();
 	}
 
 	/**
 	 * Initializes an arena from another arena.
 	 * Intended for updating the mechanic of an arena.
 	 *
-	 * @param arena the arena to copy
+	 * @param arena 		the arena to copy
+	 * @param newGameTypeId the new game type's unique identifier
 	 */
 	public Arena(@NotNull Arena arena, @NotNull String newGameTypeId) {
 		this.id = arena.id;
 		this.gameTypeId = newGameTypeId;
 		this.teams = new ArrayList<>(arena.teams);
+		this.spawnPoints = new ArrayList<>(arena.spawnPoints);
 		this.name = arena.name;
+		this.lobby = arena.lobby;
 	}
 
 	@Override
@@ -95,7 +101,27 @@ public class Arena implements Nameable<String> {
 	 * @return list of teams
 	 */
 	public @NotNull List<Team> getTeams() {
-		return Collections.emptyList(); // TODO load teams from database
+		return teams;
+	}
+
+	/**
+	 * Gets the arena's global spawn points. These override any per-team spawn points.
+	 * May be empty if the arena has no global spawn points.
+	 *
+	 * @return list of spawn points
+	 */
+	public @NotNull List<Pos> getSpawnPoints() {
+		return spawnPoints;
+	}
+
+	/**
+	 * Gets the lobby of the arena.
+	 * May be {@code null} if undefined which should be considered as an error.
+	 *
+	 * @return lobby position
+	 */
+	public @Nullable Pos getLobby() {
+		return lobby;
 	}
 
 	/**
@@ -105,8 +131,13 @@ public class Arena implements Nameable<String> {
 	 * @return the arena's instance
 	 */
 	public @NotNull InstanceContainer loadInstance(boolean copy) {
-		InstanceContainer instance = Aviary.getInstanceManager().createInstanceContainer(new AnvilLoader(id));
-		instance.setTag(Aviary.DISABLE_SAVING_TAG, copy);
+		if (instanceCache == null)
+			instanceCache = Aviary.getInstanceManager().createInstanceContainer(new AnvilLoader(id));
+		assert instanceCache != null; // IntelliJ is drunk today
+		if (!copy)
+			return instanceCache;
+		InstanceContainer instance = instanceCache.copy();
+		instance.setTag(Aviary.DISABLE_SAVING_TAG, true);
 		return instance;
 	}
 

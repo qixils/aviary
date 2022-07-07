@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+// TODO: don't forget to "close" the instance when the match is over
+//  (MinecraftServer.getInstanceManager().unregisterInstance(InstanceContainer))
+//  (note: instance's chunk loader i think doesn't need to be closed entirely as it's used by other
+//  matches on the same arena)
+
 /**
  * A match is an active game that players are participating in.
  * It stores data about the game and manages its state.
@@ -75,9 +80,8 @@ public class Match<A extends Arena> implements ForwardingAudience, Identifiable<
 	 */
 	public @NotNull Map<Team, List<GamePlayer>> getTeams() {
 		Map<Team, List<GamePlayer>> teams = new HashMap<>();
-		for (GamePlayer player : players) {
+		for (GamePlayer player : players)
 			teams.computeIfAbsent(player.getTeam(), t -> new ArrayList<>()).add(player);
-		}
 		return teams;
 	}
 
@@ -106,6 +110,15 @@ public class Match<A extends Arena> implements ForwardingAudience, Identifiable<
 	 */
 	public void setState(@NotNull MatchState state) {
 		this.state = state;
+	}
+
+	/**
+	 * Gets the instance used for this match.
+	 *
+	 * @return the instance used for this match
+	 */
+	public @NotNull Instance getInstance() {
+		return instance;
 	}
 
 	/**
