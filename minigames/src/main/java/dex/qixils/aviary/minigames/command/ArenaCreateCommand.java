@@ -1,7 +1,7 @@
-package dex.qixils.aviary.command;
+package dex.qixils.aviary.minigames.command;
 
-import dex.qixils.aviary.Minigames;
-import dex.qixils.aviary.utils.AnvilPrompt;
+import dex.qixils.aviary.minigames.Minigames;
+import dex.qixils.aviary.minigames.utils.AnvilPrompt;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.entity.Player;

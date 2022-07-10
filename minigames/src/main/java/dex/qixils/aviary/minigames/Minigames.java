@@ -1,6 +1,6 @@
-package dex.qixils.aviary;
+package dex.qixils.aviary.minigames;
 
-import dex.qixils.aviary.command.SaveInstanceCommand;
+import dex.qixils.aviary.minigames.command.SaveInstanceCommand;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

@@ -1,4 +1,4 @@
-package dex.qixils.aviary.utils;
+package dex.qixils.aviary.minigames.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;

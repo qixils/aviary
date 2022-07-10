@@ -1,7 +1,7 @@
-package dex.qixils.aviary;
+package dex.qixils.aviary.minigames;
 
-import dex.qixils.aviary.arena.Arena;
-import dex.qixils.aviary.match.Match;
+import dex.qixils.aviary.minigames.arena.Arena;
+import dex.qixils.aviary.minigames.match.Match;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

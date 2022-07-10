@@ -1,4 +1,4 @@
-package dex.qixils.aviary;
+package dex.qixils.aviary.minigames;
 
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;

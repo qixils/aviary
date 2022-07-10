@@ -1,4 +1,4 @@
-package dex.qixils.aviary;
+package dex.qixils.aviary.minigames;
 
 import org.jetbrains.annotations.NotNull;
 

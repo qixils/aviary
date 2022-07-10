@@ -12,9 +12,9 @@ dependencies {
 }
 
 application {
-    mainClass.set("dev.qixils.aviary.Minigames")
+    mainClass.set("dev.qixils.aviary.minigames.Minigames")
     @Suppress("DEPRECATION") // still used by Shadow
-    mainClassName = "dev.qixils.aviary.Minigames"
+    mainClassName = "dev.qixils.aviary.minigames.Minigames"
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {

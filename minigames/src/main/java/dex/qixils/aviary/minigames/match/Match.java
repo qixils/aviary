@@ -1,9 +1,9 @@
-package dex.qixils.aviary.match;
+package dex.qixils.aviary.minigames.match;
 
-import dex.qixils.aviary.GamePlayer;
-import dex.qixils.aviary.Identifiable;
-import dex.qixils.aviary.Team;
-import dex.qixils.aviary.arena.Arena;
+import dex.qixils.aviary.minigames.GamePlayer;
+import dex.qixils.aviary.minigames.Identifiable;
+import dex.qixils.aviary.minigames.Team;
+import dex.qixils.aviary.minigames.arena.Arena;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
 import net.minestom.server.entity.Player;

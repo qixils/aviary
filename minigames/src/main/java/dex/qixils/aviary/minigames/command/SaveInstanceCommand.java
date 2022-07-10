@@ -1,6 +1,6 @@
-package dex.qixils.aviary.command;
+package dex.qixils.aviary.minigames.command;
 
-import dex.qixils.aviary.Minigames;
+import dex.qixils.aviary.minigames.Minigames;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.instance.Instance;

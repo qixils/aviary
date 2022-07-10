@@ -1,10 +1,10 @@
-package dex.qixils.aviary.arena;
+package dex.qixils.aviary.minigames.arena;
 
-import dex.qixils.aviary.Nameable;
-import dex.qixils.aviary.match.Match;
-import dex.qixils.aviary.Minigames;
-import dex.qixils.aviary.GameType;
-import dex.qixils.aviary.Team;
+import dex.qixils.aviary.minigames.Nameable;
+import dex.qixils.aviary.minigames.match.Match;
+import dex.qixils.aviary.minigames.Minigames;
+import dex.qixils.aviary.minigames.GameType;
+import dex.qixils.aviary.minigames.Team;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.AnvilLoader;
 import net.minestom.server.instance.InstanceContainer;
