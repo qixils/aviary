@@ -1,4 +1,4 @@
-package dev.qixils.aviary;
+package dex.qixils.aviary;
 
 import net.minestom.server.color.DyeColor;
 import net.minestom.server.coordinate.Pos;

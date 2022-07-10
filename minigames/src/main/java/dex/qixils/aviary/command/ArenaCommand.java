@@ -1,4 +1,4 @@
-package dev.qixils.aviary.command;
+package dex.qixils.aviary.command;
 
 import net.minestom.server.command.builder.Command;
 

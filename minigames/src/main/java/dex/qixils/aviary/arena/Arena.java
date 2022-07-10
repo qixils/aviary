@@ -1,10 +1,10 @@
-package dev.qixils.aviary.arena;
+package dex.qixils.aviary.arena;
 
-import dev.qixils.aviary.Aviary;
-import dev.qixils.aviary.GameType;
-import dev.qixils.aviary.Nameable;
-import dev.qixils.aviary.Team;
-import dev.qixils.aviary.match.Match;
+import dex.qixils.aviary.Nameable;
+import dex.qixils.aviary.match.Match;
+import dex.qixils.aviary.Minigames;
+import dex.qixils.aviary.GameType;
+import dex.qixils.aviary.Team;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.AnvilLoader;
 import net.minestom.server.instance.InstanceContainer;
@@ -132,12 +132,12 @@ public class Arena implements Nameable<String> {
 	 */
 	public @NotNull InstanceContainer loadInstance(boolean copy) {
 		if (instanceCache == null)
-			instanceCache = Aviary.getInstanceManager().createInstanceContainer(new AnvilLoader(id));
+			instanceCache = Minigames.getInstanceManager().createInstanceContainer(new AnvilLoader(id));
 		assert instanceCache != null; // IntelliJ is drunk today
 		if (!copy)
 			return instanceCache;
 		InstanceContainer instance = instanceCache.copy();
-		instance.setTag(Aviary.DISABLE_SAVING_TAG, true);
+		instance.setTag(Minigames.DISABLE_SAVING_TAG, true);
 		return instance;
 	}
 

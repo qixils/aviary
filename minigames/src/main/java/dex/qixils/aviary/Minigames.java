@@ -1,6 +1,6 @@
-package dev.qixils.aviary;
+package dex.qixils.aviary;
 
-import dev.qixils.aviary.command.SaveInstanceCommand;
+import dex.qixils.aviary.command.SaveInstanceCommand;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,26 +17,27 @@ import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.tag.Tag;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The main class of the Aviary server.
  */
-public final class Aviary {
+public final class Minigames {
 	/**
 	 * The tag used to disable saving instances to disk.
 	 */
-	public static final Tag<Boolean> DISABLE_SAVING_TAG = Tag.Boolean("IsSavingDisabled").defaultValue(false);
+	public static final @NotNull Tag<Boolean> DISABLE_SAVING_TAG = Tag.Boolean("IsSavingDisabled").defaultValue(false);
 	/**
 	 * The prefix used in responses to commands.
 	 */
-	public static final Component PREFIX = Component.text().color(TextColor.color(0xFFFCB6))
+	public static final @NotNull Component PREFIX = Component.text().color(TextColor.color(0xFFFCB6))
 			.append(Component.text('[', TextColor.color(0x777777), TextDecoration.BOLD))
 			.append(Component.text("Aviary", TextColor.color(0xEEBA66)))
 			.append(Component.text(']', TextColor.color(0x777777), TextDecoration.BOLD))
 			.append(Component.text(' '))
 			.build();
-	private static InstanceManager instanceManager;
-	private static InstanceContainer lobby;
+	private static @Nullable("class uninitialized") InstanceManager instanceManager;
+	private static @Nullable("class uninitialized") InstanceContainer lobby;
 
 	public static void main(String[] args) {
 		// initialize server

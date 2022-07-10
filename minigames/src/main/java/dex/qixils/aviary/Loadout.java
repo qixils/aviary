@@ -1,4 +1,4 @@
-package dev.qixils.aviary;
+package dex.qixils.aviary;
 
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public final class Loadout implements Identifiable<UUID> {
 	private final @NotNull UUID uuid;
-	private final @NotNull ItemStack[] items;
+	private final ItemStack @NotNull [] items;
 	private @NotNull ItemStack offhand = ItemStack.AIR;
 	private @NotNull ItemStack helmet = ItemStack.AIR;
 	private @NotNull ItemStack chestplate = ItemStack.AIR;
@@ -38,7 +38,7 @@ public final class Loadout implements Identifiable<UUID> {
 	 */
 	// TODO BSON annotations
 	public Loadout(@NotNull UUID uuid,
-				   @NotNull ItemStack[] items,
+				   ItemStack @NotNull [] items,
 				   @NotNull ItemStack offhand,
 				   @NotNull ItemStack helmet,
 				   @NotNull ItemStack chestplate,
@@ -90,7 +90,7 @@ public final class Loadout implements Identifiable<UUID> {
 	 *
 	 * @return the items of this loadout
 	 */
-	public @NotNull ItemStack[] getItems() {
+	public ItemStack @NotNull [] getItems() {
 		return items;
 	}
 

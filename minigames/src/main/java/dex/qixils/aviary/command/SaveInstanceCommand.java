@@ -1,6 +1,6 @@
-package dev.qixils.aviary.command;
+package dex.qixils.aviary.command;
 
-import dev.qixils.aviary.Aviary;
+import dex.qixils.aviary.Minigames;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.instance.Instance;
@@ -17,19 +17,19 @@ public class SaveInstanceCommand extends Command {
 		super("save-instance");
 		setDefaultExecutor((sender, context) -> {
 			if (!(sender instanceof Entity entity)) {
-				Aviary.alert(sender, "This command can only be executed by physical entities.");
+				Minigames.alert(sender, "This command can only be executed by physical entities.");
 				return;
 			}
 			Instance instance = entity.getInstance();
 			if (instance == null) {
-				Aviary.alert(sender, "You are not in an instance.");
+				Minigames.alert(sender, "You are not in an instance.");
 				return;
 			}
-			if (instance.getTag(Aviary.DISABLE_SAVING_TAG)) {
-				Aviary.alert(sender, "This instance cannot be saved to disk.");
+			if (instance.getTag(Minigames.DISABLE_SAVING_TAG)) {
+				Minigames.alert(sender, "This instance cannot be saved to disk.");
 				return;
 			}
-			instance.saveChunksToStorage().thenRun(() -> Aviary.send(sender, "Your current instance has been saved to disk."));
+			instance.saveChunksToStorage().thenRun(() -> Minigames.send(sender, "Your current instance has been saved to disk."));
 		});
 	}
 }

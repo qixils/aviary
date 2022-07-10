@@ -1,7 +1,7 @@
-package dev.qixils.aviary.command;
+package dex.qixils.aviary.command;
 
-import dev.qixils.aviary.Aviary;
-import dev.qixils.aviary.utils.AnvilPrompt;
+import dex.qixils.aviary.Minigames;
+import dex.qixils.aviary.utils.AnvilPrompt;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.entity.Player;
@@ -13,7 +13,7 @@ public class ArenaCreateCommand extends Command {
 		super("create");
 		setDefaultExecutor((sender, context) -> {
 			if (!(sender instanceof Player player)) {
-				Aviary.alert(sender, "This command can only be executed by players.");
+				Minigames.alert(sender, "This command can only be executed by players.");
 				return;
 			}
 			CompletableFuture<String> nameFuture = AnvilPrompt.stringBuilder()

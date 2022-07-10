@@ -1,4 +1,4 @@
-package dev.qixils.aviary;
+package dex.qixils.aviary;
 
 import org.jetbrains.annotations.NotNull;
 

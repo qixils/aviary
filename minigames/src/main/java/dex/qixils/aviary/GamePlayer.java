@@ -1,6 +1,6 @@
-package dev.qixils.aviary;
+package dex.qixils.aviary;
 
-import dev.qixils.aviary.match.Match;
+import dex.qixils.aviary.match.Match;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
 import net.minestom.server.entity.Player;
