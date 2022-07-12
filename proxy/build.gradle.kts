@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":common"))
     compileOnly("com.velocitypowered:velocity-api:${velocityVersion}")
     annotationProcessor("com.velocitypowered:velocity-api:${velocityVersion}")
 }

@@ -1,5 +1,6 @@
 package dex.qixils.aviary.minigames;
 
+import dev.qixils.aviary.db.Nameable;
 import net.minestom.server.color.DyeColor;
 import net.minestom.server.coordinate.Pos;
 import org.jetbrains.annotations.NotNull;

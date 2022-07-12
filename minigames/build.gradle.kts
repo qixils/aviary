@@ -8,7 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Minestom:Minestom:${minestomVersion}")
+    api(project(":common"))
+    api("com.github.Minestom:Minestom:${minestomVersion}")
 }
 
 application {
