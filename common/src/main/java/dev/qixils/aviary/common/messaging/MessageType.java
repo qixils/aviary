@@ -4,39 +4,37 @@ import dev.qixils.aviary.common.chat.ChatAskMessage;
 import dev.qixils.aviary.common.messaging.impl.BooleanReplyMessage;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * A type of message that can be sent to or from the proxy server.
  */
-public enum MessageType {
-	// TODO: manually specifying bytes is probably not necessary
-	CHAT_ASK((byte) 0x00, ChatAskMessage.class),
-	BOOLEAN_REPLY((byte) 0x01, BooleanReplyMessage.class),
-	;
+public final class MessageType<M extends Message> {
+	// registry maps
+	private static final Map<Byte, MessageType<?>> BY_ID = new HashMap<>();
+	private static final Map<Class<? extends Message>, MessageType<?>> BY_CLASS = new HashMap<>();
 
-	private static final Map<Byte, MessageType> BY_ID;
-	private static final Map<Class<? extends Message>, MessageType> BY_CLASS;
+	// instances
+	public static final MessageType<ChatAskMessage> CHAT_ASK = register((byte) 0x00, ChatAskMessage.class, PacketType.ASK);
+	public static final MessageType<BooleanReplyMessage> BOOLEAN_REPLY = register((byte) 0x01, BooleanReplyMessage.class, PacketType.REPLY);
 
-	static {
-		Map<Byte, MessageType> byId = new HashMap<>();
-		Map<Class<? extends Message>, MessageType> byClass = new HashMap<>();
-		for (MessageType type : values()) {
-			byId.put(type.id, type);
-			byClass.put(type.clazz, type);
-		}
-		BY_ID = Collections.unmodifiableMap(byId);
-		BY_CLASS = Collections.unmodifiableMap(byClass);
-	}
-
+	// fields
 	private final byte id;
-	private final Class<? extends Message> clazz;
-
-	MessageType(byte id, Class<? extends Message> clazz) {
+	private final @NotNull Class<M> clazz;
+	private final @NotNull PacketType packetType;
+	private MessageType(byte id, @NotNull Class<M> clazz, @NotNull PacketType packetType) {
 		this.id = id;
 		this.clazz = clazz;
+		this.packetType = packetType;
+	}
+
+	// registry methods
+	private static <T extends Message> MessageType<T> register(byte id, @NotNull Class<T> clazz, @NotNull PacketType packetType) {
+		MessageType<T> type = new MessageType<>(id, clazz, packetType);
+		BY_ID.put(id, type);
+		BY_CLASS.put(clazz, type);
+		return type;
 	}
 
 	/**
@@ -47,7 +45,7 @@ public enum MessageType {
 	 * @throws IllegalArgumentException if no message type with the given id exists
 	 */
 	@NotNull
-	public static MessageType byId(byte id) {
+	public static MessageType<?> byId(byte id) {
 		if (!BY_ID.containsKey(id)) {
 			throw new IllegalArgumentException("No message type with id " + id);
 		}
@@ -62,13 +60,14 @@ public enum MessageType {
 	 * @throws IllegalArgumentException if no message type with the given class exists
 	 */
 	@NotNull
-	public static MessageType byClass(Class<? extends Message> clazz) {
+	public static MessageType<?> byClass(Class<? extends Message> clazz) {
 		if (!BY_CLASS.containsKey(clazz)) {
 			throw new IllegalArgumentException("No message type with class " + clazz);
 		}
 		return BY_CLASS.get(clazz);
 	}
 
+	// instance methods
 	/**
 	 * Gets the id of this message type.
 	 *
@@ -83,7 +82,19 @@ public enum MessageType {
 	 *
 	 * @return the class of this message type
 	 */
-	public Class<? extends Message> getClazz() {
+	@NotNull
+	public Class<M> getMessageClass() {
 		return clazz;
+	}
+
+	/**
+	 * Gets the packet type of this message type.
+	 * This determines how the message should be handled by the connected server.
+	 *
+	 * @return the packet type of this message type
+	 */
+	@NotNull
+	public PacketType getPacketType() {
+		return packetType;
 	}
 }

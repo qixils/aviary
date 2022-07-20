@@ -4,6 +4,8 @@ import dev.qixils.aviary.db.Identifiable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A channel which facilitates the communication of messages between two servers.
@@ -71,15 +73,18 @@ public interface PluginChannel extends Identifiable<String> {
 	}
 
 	/**
-	 * Produces a reply to an incoming ask.
+	 * Registers a handler for incoming messages of the given type.
 	 *
-	 * @param ask the ask message to reply to
-	 * @return the reply to the ask message
+	 * @param type    the type of message to handle
+	 * @param handler the handler to register
 	 */
-	// TODO: is this how i want this to work?
-	//  i could do reflection stuff to automatically instantiate replies to asks
-	//  or i could do more like an event listener system where the code has to register event listeners
-	//  and all this isn't to mention the handling of non-ask messages
-	@NotNull
-	ReplyMessage reply(@NotNull AskMessage ask);
+	<M extends VoidMessage> void registerHandler(@NotNull MessageType<M> type, @NotNull Consumer<M> handler);
+
+	/**
+	 * Registers a handler for incoming ask messages of the given type.
+	 *
+	 * @param type    the type of ask message to handle
+	 * @param handler the handler to register
+	 */
+	<M extends AskMessage> void registerHandler(@NotNull MessageType<M> type, @NotNull Function<M, ReplyMessage> handler);
 }
