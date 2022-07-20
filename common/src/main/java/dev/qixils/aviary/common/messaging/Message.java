@@ -22,5 +22,7 @@ public interface Message {
 	 * @return the type of this message
 	 */
 	@NotNull
-	MessageType getType();
+	default MessageType getType() {
+		return MessageType.byClass(getClass());
+	}
 }

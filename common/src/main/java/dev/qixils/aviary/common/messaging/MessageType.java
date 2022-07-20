@@ -1,5 +1,7 @@
 package dev.qixils.aviary.common.messaging;
 
+import dev.qixils.aviary.common.chat.ChatAskMessage;
+import dev.qixils.aviary.common.messaging.impl.BooleanReplyMessage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -10,6 +12,9 @@ import java.util.Map;
  * A type of message that can be sent to or from the proxy server.
  */
 public enum MessageType {
+	// TODO: manually specifying bytes is probably not necessary
+	CHAT_ASK((byte) 0x00, ChatAskMessage.class),
+	BOOLEAN_REPLY((byte) 0x01, BooleanReplyMessage.class),
 	;
 
 	private static final Map<Byte, MessageType> BY_ID;

@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static dev.qixils.aviary.common.Aviary.NAMESPACE;
 
-@SuppressWarnings("PatternValidation")
 public final class Registries {
 	private Registries() {
 		throw new UnsupportedOperationException("This class is not meant to be instantiated");
@@ -31,5 +30,4 @@ public final class Registries {
 	}
 
 	public static Registry<Registry<?>> REGISTRIES = initMetaRegistry();
-	// TODO: create some sort of key system similar to sponge for accessing registries instead of excessively using static fields?
 }
