@@ -7,7 +7,7 @@ public abstract class AbstractPluginChannel implements PluginChannel {
 	private byte id = 0x00;
 
 	@Override
-	public byte nextAskId() {
+	public byte nextId() {
 		return id++;
 	}
 }

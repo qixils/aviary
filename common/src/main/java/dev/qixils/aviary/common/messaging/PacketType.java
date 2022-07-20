@@ -13,7 +13,7 @@ public enum PacketType {
 	 */
 	ASK(true),
 	/**
-	 * A message that is sent as a reply to an {@link AskMessage}.
+	 * A message that is sent as a reply to an ask.
 	 */
 	REPLY(false);
 

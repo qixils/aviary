@@ -13,6 +13,29 @@ import java.util.function.Function;
 public interface PluginChannel extends Identifiable<String> {
 
 	/**
+	 * Converts a message and its ID to a byte array.
+	 *
+	 * @param message the message to convert
+	 * @param id      the ID of the message
+	 * @return the byte array
+	 */
+	static byte[] asBytes(@NotNull Message message, byte id) {
+		byte[] bytes = message.encode();
+		byte[] fullMessage = new byte[bytes.length + 2];
+		fullMessage[0] = message.getType().getId();
+		fullMessage[1] = id;
+		System.arraycopy(bytes, 0, fullMessage, 2, bytes.length);
+		return fullMessage;
+	}
+
+	/**
+	 * Generates an ID to use for a new non-reply message.
+	 *
+	 * @return a new ID
+	 */
+	byte nextId();
+
+	/**
 	 * Sends a raw array of bytes to the connected server.
 	 *
 	 * @param data the byte array to send
@@ -23,25 +46,22 @@ public interface PluginChannel extends Identifiable<String> {
 	 * Sends a message to the connected server.
 	 *
 	 * @param message the message to send
+	 * @param id      the ID of the message
 	 */
-	default void send(@NotNull Message message) {
-		if (message instanceof AskMessage ask) {
-			ask(ask);
-			return;
-		}
-		byte[] bytes = message.encode();
-		byte[] fullMessage = new byte[bytes.length + 1];
-		fullMessage[0] = message.getType().getId();
-		System.arraycopy(bytes, 0, fullMessage, 1, bytes.length);
-		send(fullMessage);
+	default void send(@NotNull Message message, byte id) {
+		if (message.getType().getPacketType().isReplyExpected())
+			throw new IllegalArgumentException("Asks should be sent through #ask, not #send");
+		send(asBytes(message, id));
 	}
 
 	/**
-	 * Returns the next ID to use for {@code #ask}.
+	 * Sends a message to the connected server.
 	 *
-	 * @return the next ID to use for ask messages
+	 * @param message the message to send
 	 */
-	byte nextAskId();
+	default void send(@NotNull Message message) {
+		send(message, nextId());
+	}
 
 	/**
 	 * Sends a raw array of bytes to the connected server and returns a future that will be
@@ -52,7 +72,7 @@ public interface PluginChannel extends Identifiable<String> {
 	 * {@link java.util.concurrent.TimeoutException TimeoutException} if a response is not received
 	 */
 	@NotNull
-	CompletableFuture<ReplyMessage> ask(byte @NotNull [] data);
+	CompletableFuture<Message> ask(byte @NotNull [] data);
 
 	/**
 	 * Sends a message to the connected server and returns a future that will be completed upon
@@ -63,28 +83,25 @@ public interface PluginChannel extends Identifiable<String> {
 	 * {@link java.util.concurrent.TimeoutException TimeoutException} if a response is not received
 	 */
 	@NotNull
-	default CompletableFuture<ReplyMessage> ask(@NotNull AskMessage message) {
-		byte[] bytes = message.encode();
-		byte[] fullMessage = new byte[bytes.length + 2];
-		fullMessage[0] = message.getType().getId();
-		fullMessage[1] = nextAskId();
-		System.arraycopy(bytes, 0, fullMessage, 2, bytes.length);
-		return ask(fullMessage);
+	default CompletableFuture<Message> ask(@NotNull Message message) {
+		return ask(asBytes(message, nextId()));
 	}
 
 	/**
-	 * Registers a handler for incoming messages of the given type.
+	 * Registers a handler for incoming {@link PacketType#VOID void messages} of the given type.
 	 *
-	 * @param type    the type of message to handle
+	 * @param type    the type of {@link PacketType#VOID void message} to handle
 	 * @param handler the handler to register
+	 * @throws IllegalArgumentException if the type is not {@link PacketType#VOID void}
 	 */
-	<M extends VoidMessage> void registerHandler(@NotNull MessageType<M> type, @NotNull Consumer<M> handler);
+	<M extends Message> void registerVoidHandler(@NotNull MessageType<M> type, @NotNull Consumer<M> handler);
 
 	/**
-	 * Registers a handler for incoming ask messages of the given type.
+	 * Registers a handler for incoming {@link PacketType#ASK ask messages} of the given type.
 	 *
-	 * @param type    the type of ask message to handle
+	 * @param type    the type of {@link PacketType#ASK ask message} to handle
 	 * @param handler the handler to register
+	 * @throws IllegalArgumentException if the type is not {@link PacketType#ASK ask}
 	 */
-	<M extends AskMessage> void registerHandler(@NotNull MessageType<M> type, @NotNull Function<M, ReplyMessage> handler);
+	<M extends Message> void registerAskHandler(@NotNull MessageType<M> type, @NotNull Function<M, Message> handler);
 }
