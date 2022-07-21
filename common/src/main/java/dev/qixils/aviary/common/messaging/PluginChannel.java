@@ -22,8 +22,8 @@ public interface PluginChannel extends Identifiable<String> {
 	static byte[] asBytes(@NotNull Message message, byte id) {
 		byte[] bytes = message.encode();
 		byte[] fullMessage = new byte[bytes.length + 2];
-		fullMessage[0] = message.getType().getId();
-		fullMessage[1] = id;
+		fullMessage[0] = id;
+		fullMessage[1] = message.getType().getId();
 		System.arraycopy(bytes, 0, fullMessage, 2, bytes.length);
 		return fullMessage;
 	}
@@ -83,8 +83,9 @@ public interface PluginChannel extends Identifiable<String> {
 	 * {@link java.util.concurrent.TimeoutException TimeoutException} if a response is not received
 	 */
 	@NotNull
-	default CompletableFuture<Message> ask(@NotNull Message message) {
-		return ask(asBytes(message, nextId()));
+	default <R extends Message> CompletableFuture<R> ask(@NotNull AskMessage<R> message) {
+		//noinspection unchecked
+		return ask(asBytes(message, nextId())).thenApply(msg -> (R) msg);
 	}
 
 	/**

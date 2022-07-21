@@ -16,6 +16,8 @@ public interface Aviary {
 
 	/**
 	 * Gets the {@link PluginChannel} for the given name.
+	 * <p>
+	 * Implementations are recommended to cache the result of this method.
 	 *
 	 * @param name the name of the channel
 	 * @return the channel

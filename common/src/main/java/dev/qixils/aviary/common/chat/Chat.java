@@ -1,12 +1,16 @@
 package dev.qixils.aviary.common.chat;
 
 import dev.qixils.aviary.common.Aviary;
+import dev.qixils.aviary.common.messaging.MessageType;
 import dev.qixils.aviary.common.messaging.PluginChannel;
+import dev.qixils.aviary.common.messaging.impl.BooleanReplyMessage;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The manager of chat channels.
@@ -20,6 +24,7 @@ public class Chat { // TODO: abstract? final?
 	 * The local map of tracked channels.
 	 */
 	protected final @NotNull Map<Key, ChatChannel> registeredChannels = new HashMap<>();
+	private @Nullable PluginChannel pluginChannel;
 
 	/**
 	 * Creates a new chat instance.
@@ -36,7 +41,12 @@ public class Chat { // TODO: abstract? final?
 	 */
 	@NotNull
 	protected PluginChannel getPluginChannel() {
-		return this.aviary.getPluginChannel("aviary.chat");
+		if (pluginChannel != null) return pluginChannel;
+
+		// get plugin channel and register ask handler
+		pluginChannel = aviary.getPluginChannel("aviary.chat");
+		pluginChannel.registerAskHandler(MessageType.CHAT_ASK, ask -> new BooleanReplyMessage(registeredChannels.containsKey(ask.getValue())));
+		return pluginChannel;
 	}
 
 	/**
@@ -45,9 +55,10 @@ public class Chat { // TODO: abstract? final?
 	 * @param id the id of the channel to check
 	 * @return true if the channel is known, false otherwise
 	 */
-	public boolean isKnownChannel(@NotNull Key id) {
-		if (this.registeredChannels.containsKey(id))
-			return true;
-		// TODO: use plugin channel to ask connected server if it knows of the requested channel
+	public CompletableFuture<Boolean> isKnownChannel(@NotNull Key id) {
+		if (registeredChannels.containsKey(id))
+			return CompletableFuture.completedFuture(true);
+		PluginChannel channel = this.getPluginChannel();
+		return channel.ask(new ChatAskMessage(id)).thenApply(BooleanReplyMessage::getValue);
 	}
 }
