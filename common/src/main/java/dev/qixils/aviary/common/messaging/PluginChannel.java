@@ -93,7 +93,8 @@ public interface PluginChannel extends Identifiable<String> {
 	 *
 	 * @param type    the type of {@link PacketType#VOID void message} to handle
 	 * @param handler the handler to register
-	 * @throws IllegalArgumentException if the type is not {@link PacketType#VOID void}
+	 * @throws IllegalArgumentException if the type is not {@link PacketType#VOID void} or if a
+	 * 								    handler is already registered for the given type
 	 */
 	<M extends Message> void registerVoidHandler(@NotNull MessageType<M> type, @NotNull Consumer<M> handler);
 
@@ -102,7 +103,34 @@ public interface PluginChannel extends Identifiable<String> {
 	 *
 	 * @param type    the type of {@link PacketType#ASK ask message} to handle
 	 * @param handler the handler to register
-	 * @throws IllegalArgumentException if the type is not {@link PacketType#ASK ask}
+	 * @throws IllegalArgumentException if the type is not {@link PacketType#ASK ask} or if a
+	 * 								    handler is already registered for the given type
 	 */
-	<M extends Message> void registerAskHandler(@NotNull MessageType<M> type, @NotNull Function<M, Message> handler);
+	<M extends AskMessage<R>, R extends Message> void registerAskHandler(@NotNull MessageType<M> type, @NotNull Function<M, R> handler);
+
+	/**
+	 * Determines if a void handler has been registered for the given type.
+	 *
+	 * @param type the type to check
+	 * @return true if a void handler is registered for the given type, false otherwise
+	 */
+	boolean hasVoidHandler(@NotNull MessageType<?> type);
+
+	/**
+	 * Determines if an ask handler has been registered for the given type.
+	 *
+	 * @param type the type to check
+	 * @return true if an ask handler is registered for the given type, false otherwise
+	 */
+	boolean hasAskHandler(@NotNull MessageType<?> type);
+
+	/**
+	 * Determines if any handler has been registered for the given type.
+	 *
+	 * @param type the type to check
+	 * @return true if any handler is registered for the given type, false otherwise
+	 */
+	default boolean hasHandler(@NotNull MessageType<?> type) {
+		return hasVoidHandler(type) || hasAskHandler(type);
+	}
 }

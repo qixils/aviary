@@ -4,6 +4,8 @@ import dev.qixils.aviary.common.chat.Chat;
 import dev.qixils.aviary.common.messaging.PluginChannel;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 /**
  * The core of the Aviary API.
  */
@@ -15,14 +17,13 @@ public interface Aviary {
 	@NotNull String NAMESPACE = "aviary";
 
 	/**
-	 * Gets the {@link PluginChannel} for the given name.
-	 * <p>
-	 * Implementations are recommended to cache the result of this method.
+	 * Gets the {@link PluginChannel} for the given name and for the given player's server.
 	 *
-	 * @param name the name of the channel
+	 * @param name   the name of the channel
+	 * @param player the UUID of the player
 	 * @return the channel
 	 */
-	@NotNull PluginChannel getPluginChannel(@NotNull String name);
+	@NotNull PluginChannel getPluginChannel(@NotNull String name, @NotNull UUID player);
 
 	/**
 	 * Gets the {@link Chat} instance for managing chat channels.
