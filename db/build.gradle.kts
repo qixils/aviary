@@ -4,7 +4,6 @@ val mongoVersion: String by project
 val reactorVersion: String by project
 
 description = "Module for interacting with Aviary's databases"
-version = "1.0.0-SNAPSHOT"
 
 dependencies {
     api("org.jetbrains:annotations:${annotationsVersion}")

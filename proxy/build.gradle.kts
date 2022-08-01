@@ -1,7 +1,10 @@
 val velocityVersion: String by project
 
 description = "Aviary's Velocity proxy plugin"
-version = "1.0.0-SNAPSHOT"
+
+plugins {
+    id("com.github.johnrengelman.shadow") version ("7.1.1")
+}
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/") {

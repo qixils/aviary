@@ -1,23 +1,29 @@
+val kotlinVersion: String by project
+
 plugins {
-    application
-    id("java")
-    id("java-library")
-    id("com.github.johnrengelman.shadow") version ("7.1.1") apply false
+    kotlin("jvm") version "1.7.10" apply true
 }
 
-subprojects {
-    apply {
-        plugin("org.gradle.application")
-        plugin("java")
-        plugin("java-library")
-        plugin("com.github.johnrengelman.shadow")
-    }
-
+allprojects {
+    group = "dev.qixils.aviary"
+    version = "1.0.0-SNAPSHOT"
     repositories {
         mavenCentral()
     }
 }
 
-allprojects {
-    group = "dev.qixils.aviary"
+subprojects {
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
+    }
+
+    dependencies {
+        api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
 }

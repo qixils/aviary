@@ -1,7 +1,15 @@
 val minestomVersion: String by project
 
 description = "Aviary's Minigame server"
-version = "1.0.0-SNAPSHOT"
+
+plugins {
+    application
+    id("com.github.johnrengelman.shadow") version ("7.1.1")
+}
+
+application {
+    mainClass.set("dev.qixils.aviary.minigames.Minigames")
+}
 
 repositories {
     maven(url = "https://jitpack.io")
