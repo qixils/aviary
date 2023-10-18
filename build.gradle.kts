@@ -1,7 +1,7 @@
 val kotlinVersion: String by project
 
 plugins {
-    kotlin("jvm") version "1.7.10" apply true
+    kotlin("jvm") version "1.9.10" apply true
 }
 
 allprojects {

@@ -4,7 +4,7 @@ description = "Aviary's Minigame server"
 
 plugins {
     application
-    id("com.github.johnrengelman.shadow") version ("7.1.1")
+    id("com.github.johnrengelman.shadow") version ("8.1.1")
 }
 
 application {
@@ -18,12 +18,6 @@ repositories {
 dependencies {
     api(project(":common"))
     api("com.github.Minestom:Minestom:${minestomVersion}")
-}
-
-application {
-    mainClass.set("dev.qixils.aviary.minigames.Minigames")
-    @Suppress("DEPRECATION") // still used by Shadow
-    mainClassName = "dev.qixils.aviary.minigames.Minigames"
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
