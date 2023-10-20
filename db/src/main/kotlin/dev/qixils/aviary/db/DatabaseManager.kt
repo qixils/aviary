@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux
 import java.io.Closeable
 
 // TODO: allow servers to add custom codecs (serializers) (i.e. for Minestom objects)
+// TODO: idk if i love that this is using mongo
 
 /**
  * Manages the connection to a MongoDB database.

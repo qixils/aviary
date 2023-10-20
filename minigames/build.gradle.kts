@@ -1,23 +1,19 @@
-val minestomVersion: String by project
+val minecraftVersion: String by project
 
 description = "Aviary's Minigame server"
 
 plugins {
-    application
     id("com.github.johnrengelman.shadow") version ("8.1.1")
 }
 
-application {
-    mainClass.set("dev.qixils.aviary.minigames.Minigames")
-}
-
 repositories {
-    maven(url = "https://jitpack.io")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
     api(project(":common"))
-    api("com.github.Minestom:Minestom:${minestomVersion}")
+    compileOnly("io.papermc.paper:paper-api:${minecraftVersion}-R0.1-SNAPSHOT")
+    implementation(kotlin("reflect"))
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
